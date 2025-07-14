@@ -59,10 +59,10 @@ public class ConexionServiceImpl implements IConexionService {
             conexionConvetImpl = new ConexionConvetImpl();
             conexionEntity = conexionConvetImpl.fromDto(conexionDto);
             conexionEntity.setID_Conexion (1);
-            String dato = ConstantesConexion.guardar(conexionDto);
+
             //conexionEntity = conexionRepository.save(conexionEntity);
 
-            if(conexionEntity!=null) {
+            if(ConstantesConexion.guardar(conexionDto)) {
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_INSERT_OK );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
             }else{
@@ -95,10 +95,10 @@ public class ConexionServiceImpl implements IConexionService {
         try{
             conexionConvetImpl = new ConexionConvetImpl();
             conexionEntity = conexionConvetImpl.fromDto(conexionDto);
-            String dato = ConstantesConexion.actualizarPorId(conexionDto);
+
             //conexionEntity = conexionRepository.save(conexionEntity );
 
-            if(conexionEntity!=null) {
+            if( ConstantesConexion.actualizarPorId(conexionDto)) {
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_UPDATE_OK );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
             }else{
@@ -145,12 +145,13 @@ public class ConexionServiceImpl implements IConexionService {
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         try{
-            String dato = ConstantesConexion.eliminarPorId(id);
-//            if(conexionRepository.existsById(id)){
-//                conexionRepository.deleteById(id);
-//                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_DELETE_CONEXION );
-//                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
-//            }else{
+
+            if(ConstantesConexion.eliminarPorId(id)){
+                //conexionRepository.deleteById(id);
+                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_DELETE_CONEXION );
+                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
+            }
+//            else{
 //                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_DELETE_ERROR_CONEXION );
 //                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
 //            }

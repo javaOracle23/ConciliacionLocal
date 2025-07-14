@@ -63,8 +63,9 @@ public final class ConstantesConexion {
 
     public static final String MENSAJE_DATOS_CONEXION = "No existen la conexion a consultar";
 
-    public static String guardar(ConexionDto conexionDto){
+    public static boolean guardar(ConexionDto conexionDto){
 
+        boolean guardadoExitoso = false;
         String nombreArchivo = "TBConexion.parquet";
         List<GenericRecord> records = null;
         org.apache.hadoop.fs.Path path= null;
@@ -136,17 +137,18 @@ public final class ConstantesConexion {
                 }
             }
             writer.write(record);
-
+            guardadoExitoso = true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return "";
+        return guardadoExitoso;
     }
 
 
-    public static String actualizarPorId(ConexionDto conexionDto){
+    public static boolean actualizarPorId(ConexionDto conexionDto){
 
+        boolean actualizarExitoso = false;
         String nombreArchivo = "TBConexion.parquet";
         List<GenericRecord> records = null;
         org.apache.hadoop.fs.Path path= null;
@@ -218,16 +220,17 @@ public final class ConstantesConexion {
                     writer.write(record);
                 }
             }
-
+            actualizarExitoso = true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "";
+        return actualizarExitoso;
     }
 
 
-    public static String eliminarPorId(Long id){
+    public static boolean eliminarPorId(Long id){
 
+        boolean eliminarExitoso = false;
         String nombreArchivo = "TBConexion.parquet";
         List<GenericRecord> records = null;
         org.apache.hadoop.fs.Path path= null;
@@ -261,6 +264,7 @@ public final class ConstantesConexion {
                         records.add(rec);
                     }
                 }
+                eliminarExitoso = true;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -287,7 +291,7 @@ public final class ConstantesConexion {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "";
+        return eliminarExitoso;
     }
 
 
