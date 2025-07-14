@@ -9,6 +9,7 @@ import com.conciliacion.parquet.utilities.ConstantesConexion;
 import com.conciliacion.parquet.utilities.ConstantesGenericas;
 import com.conciliacion.parquet.utilities.ConstantesTipoConexion;
 import com.conciliacion.parquet.utilities.validateDto.ValidateConexion;
+import org.apache.avro.generic.GenericRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,21 +44,22 @@ public class ConexionServiceImpl implements IConexionService {
             return mapResponse;
         }
 
-        Map<String, Object> mapTipoConexion = (Map<String, Object>)tipoConexionServiceImpl.obtenerTipoConexion(conexionDto.getIdTipoConexion());
-        if (!mapTipoConexion.containsKey(ConstantesTipoConexion.DATOS_TIPO_CONEXION)) {
-            return ResponseEntity.status(HttpStatus.OK).body(mapTipoConexion);
-        }
+//        Map<String, Object> mapTipoConexion = (Map<String, Object>)tipoConexionServiceImpl.obtenerTipoConexion(conexionDto.getIdTipoConexion());
+//        if (!mapTipoConexion.containsKey(ConstantesTipoConexion.DATOS_TIPO_CONEXION)) {
+//            return ResponseEntity.status(HttpStatus.OK).body(mapTipoConexion);
+//        }
 
         try{
             //conexionEntity = conexionRepository.consultarConexion(conexionDto.getNombre() ,conexionDto.getHost(),conexionDto.getPuerto());
-            if(conexionEntity!=null) {
-                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_INSERT_CONEXION );
-                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
-                return mapResponse;
-            }
+//            if(conexionEntity!=null) {
+//                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_INSERT_CONEXION );
+//                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
+//                return mapResponse;
+//            }
             conexionConvetImpl = new ConexionConvetImpl();
             conexionEntity = conexionConvetImpl.fromDto(conexionDto);
-            conexionEntity.setID_Conexion (null);
+            conexionEntity.setID_Conexion (1);
+            String dato = ConstantesConexion.guardar(conexionDto);
             //conexionEntity = conexionRepository.save(conexionEntity);
 
             if(conexionEntity!=null) {
@@ -93,6 +95,7 @@ public class ConexionServiceImpl implements IConexionService {
         try{
             conexionConvetImpl = new ConexionConvetImpl();
             conexionEntity = conexionConvetImpl.fromDto(conexionDto);
+            String dato = ConstantesConexion.actualizarPorId(conexionDto);
             //conexionEntity = conexionRepository.save(conexionEntity );
 
             if(conexionEntity!=null) {
@@ -116,10 +119,10 @@ public class ConexionServiceImpl implements IConexionService {
     public Object consultarConexiones() {
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        List<ConexionEntity> listConexiones = null;
+        List<ConexionDto> listConexiones = null;
         try{
             //listConexiones = conexionRepository.consultarConexiones();
-
+            listConexiones = ConstantesConexion.consultarConexiones();
             if(listConexiones != null && listConexiones.size() != 0){
                 mapResponse.put(ConstantesConexion.LISTA_CONEXIONES, listConexiones );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
@@ -142,7 +145,7 @@ public class ConexionServiceImpl implements IConexionService {
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         try{
-
+            String dato = ConstantesConexion.eliminarPorId(id);
 //            if(conexionRepository.existsById(id)){
 //                conexionRepository.deleteById(id);
 //                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_DELETE_CONEXION );
@@ -165,12 +168,14 @@ public class ConexionServiceImpl implements IConexionService {
     @Override
     public Object obtenerConexion(Integer idConexion) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        ConexionEntity ConexionEntity = null;
+        ConexionDto conexionDto = null;
+
         try{
             //ConexionEntity = conexionRepository.obtenerConexion(idConexion);
-            if(ConexionEntity != null){
+            conexionDto = ConstantesConexion.consultarConexionesPorId(Long.valueOf(idConexion));
+            if(conexionDto != null){
                 ConexionConvetImpl conexionConvetImpl = new ConexionConvetImpl();
-                mapResponse.put(ConstantesConexion.DATOS_CONEXION,  conexionConvetImpl.fromEntity(ConexionEntity) );
+                mapResponse.put(ConstantesConexion.DATOS_CONEXION, conexionDto );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
             }else{
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_DATOS_CONEXION );
