@@ -1,6 +1,7 @@
 package com.conciliacion.parquet.services.implementation;
 
 
+import com.conciliacion.parquet.dto.TipoParametroDto;
 import com.conciliacion.parquet.entity.TipoParametroEntity;
 import com.conciliacion.parquet.repository.TipoParametroRepository;
 import com.conciliacion.parquet.services.interfaces.ITipoParametroServicie;
@@ -25,11 +26,14 @@ public class TipoParametroServicieImpl implements ITipoParametroServicie {
 
     @Override
     public Object consultarTiposParametros() {
+
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        List<TipoParametroEntity> listTipoParametro = null;
+        List<TipoParametroDto> listTipoParametro = null;
+
         try {
             //listTipoParametro = tipoParametroRepository.consultarTipoParametro();
 
+            listTipoParametro = ConstantesTipoParametro.listarTipoParametro();
             if (listTipoParametro != null && listTipoParametro.size() != 0) {
                 mapResponse.put(ConstantesTipoParametro.LISTA_TIPO_PARAMETRO, listTipoParametro);
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK);
@@ -43,7 +47,6 @@ public class TipoParametroServicieImpl implements ITipoParametroServicie {
             mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_ERROR_BD);
             LOGGER.error(ConstantesGenericas.MENSAJE, e.getMessage());
             return mapResponse;
-
 
         }
         return mapResponse;
