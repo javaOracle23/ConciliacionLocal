@@ -2,7 +2,6 @@ package com.conciliacion.parquet.services.implementation;
 
 
 import com.conciliacion.parquet.dto.TipoParametroDto;
-import com.conciliacion.parquet.entity.TipoParametroEntity;
 import com.conciliacion.parquet.repository.TipoParametroRepository;
 import com.conciliacion.parquet.services.interfaces.ITipoParametroServicie;
 import com.conciliacion.parquet.utilities.ConstantesGenericas;
@@ -17,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class TipoParametroServicieImpl implements ITipoParametroServicie {
+public class TipoParametroServiceImpl implements ITipoParametroServicie {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(TipoParametroServicieImpl.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(TipoParametroServiceImpl.class);
 
     @Autowired(required=false)
     private TipoParametroRepository tipoParametroRepository;
