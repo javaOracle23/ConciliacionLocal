@@ -28,7 +28,8 @@ public class TipoConexionServiceImpl implements ITipoConexionService {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         TipoConexionEntity tipoConexionEntity = null;
         try{
-            //tipoConexionEntity = tipoConexionRepository.obtenerTipoConexion(idTipoConexion);
+            //tipoConexionEntity = tipoConexionRepository.obtenerTipoConexion(idTipoConexion);}
+            tipoConexionEntity = ConstantesTipoConexion.consultarTipoConexionPorId(Long.valueOf(idTipoConexion));
             if(tipoConexionEntity != null){
                 mapResponse.put(ConstantesTipoConexion.DATOS_TIPO_CONEXION,  tipoConexionEntity );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
@@ -52,7 +53,7 @@ public class TipoConexionServiceImpl implements ITipoConexionService {
         List<TipoConexionEntity> listTiposConexiones = null;
         try{
             //listTiposConexiones = tipoConexionRepository.consultarTiposConexiones();
-
+            listTiposConexiones = ConstantesTipoConexion.consultarTiposConexion();
             if(listTiposConexiones != null && listTiposConexiones.size() != 0){
                 mapResponse.put(ConstantesTipoConexion.LISTA_TIPO_CONEXION, listTiposConexiones );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );

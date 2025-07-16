@@ -29,6 +29,7 @@ public class ParametrosEjecutadosServiceImpl implements IParametrosEjecutadosSer
         ParametrosEjecutadosEntity parametrosEjecutadosEntity = null;
         try{
             //parametrosEjecutadosEntity = parametrosEjecutadosRepository.consultarParametrosEjecutadosPorIdEjecucion(idEjecucion);
+            parametrosEjecutadosEntity = ConstantesParametrosEjecuciones.consultarParametrosEjecutadosPorId(Long.valueOf(idEjecucion));
             if(parametrosEjecutadosEntity != null){
                 mapResponse.put(ConstantesParametrosEjecuciones.PARAMETROS_EJECUCIONES, parametrosEjecutadosEntity );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
@@ -51,7 +52,7 @@ public class ParametrosEjecutadosServiceImpl implements IParametrosEjecutadosSer
         List<ParametrosEjecutadosEntity> listParametrosEjecutados = null;
         try{
             //listParametrosEjecutados = parametrosEjecutadosRepository.consultarParametrosEjecutados();
-
+            listParametrosEjecutados = ConstantesParametrosEjecuciones.consultarParametrosEjecutados();
             if(listParametrosEjecutados != null && listParametrosEjecutados.size() != 0){
                 mapResponse.put(ConstantesParametrosEjecuciones.LISTA_PARAMETROS_EJECUCIONES, listParametrosEjecutados );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );

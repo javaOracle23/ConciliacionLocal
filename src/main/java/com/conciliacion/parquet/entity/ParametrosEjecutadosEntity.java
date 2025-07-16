@@ -7,7 +7,6 @@ import java.io.Serializable;
 //@Table(schema = ConstantesConexion.NOMBRE_SCHEMA_DATABASE_CONCILIACION, name = "parametros_ejecutados")
 public class ParametrosEjecutadosEntity implements Serializable {
 
-    private static final long serialVersionUID = 1l;
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +22,7 @@ public class ParametrosEjecutadosEntity implements Serializable {
 
 //    @NotNull
 //    @Column(name = "json_parametros_destino")
-    private Integer jsonParametrosDestino;
+    private String jsonParametrosDestino;
 
 //    @Column(name = "job_id")
     private Integer jobId;
@@ -52,11 +51,11 @@ public class ParametrosEjecutadosEntity implements Serializable {
         this.jsonParametrosOrigen = jsonParametrosOrigen;
     }
 
-    public Integer getJsonParametrosDestino() {
+    public String getJsonParametrosDestino() {
         return jsonParametrosDestino;
     }
 
-    public void setJsonParametrosDestino(Integer jsonParametrosDestino) {
+    public void setJsonParametrosDestino(String jsonParametrosDestino) {
         this.jsonParametrosDestino = jsonParametrosDestino;
     }
 
