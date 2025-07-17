@@ -7,6 +7,7 @@ import com.conciliacion.parquet.repository.ConciliacionRepository;
 import com.conciliacion.parquet.services.interfaces.IConciliacionService;
 import com.conciliacion.parquet.utilities.ConstantesConciliacion;
 import com.conciliacion.parquet.utilities.ConstantesGenericas;
+import org.apache.parquet.example.data.simple.LongValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,12 @@ public class ConciliacionServiceImpl implements IConciliacionService {
     public Object obtenerConciliacion(Integer idConciliacion) {
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        ConciliacionEntity conciliacionEntity = null;
+        ConciliacionDto conciliacionDto = null;
         try{
             //conciliacionEntity = conciliacionRepository.obtenerConciliacion(idConciliacion);
-            if(conciliacionEntity != null){
-                mapResponse.put(ConstantesConciliacion.CONCILIACION, conciliacionEntity );
+            conciliacionDto = ConstantesConciliacion.consultarConciliacionPorId(Long.valueOf(idConciliacion));
+            if(conciliacionDto != null){
+                mapResponse.put(ConstantesConciliacion.CONCILIACION, conciliacionDto );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
             }else{
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_CONCILIACION );
@@ -54,13 +56,13 @@ public class ConciliacionServiceImpl implements IConciliacionService {
 
         try{
             if (!conciliacionDto.getNombreConciliacion().isEmpty()){
-                conciliacionConvert = new ConciliacionConvertImpl();
-                conciliacionEntity = conciliacionConvert.fromDto(conciliacionDto);
-                conciliacionEntity.setIdConciliacion (null);
-                conciliacionEntity.setFechaCreacion(new Date());
+//                conciliacionConvert = new ConciliacionConvertImpl();
+//                conciliacionEntity = conciliacionConvert.fromDto(conciliacionDto);
+//                conciliacionEntity.setIdConciliacion (null);
+//                conciliacionEntity.setFechaCreacion(new Date());
                 //conciliacionEntity = conciliacionRepository.save(conciliacionEntity);
 
-                if(conciliacionEntity!=null) {
+                if(ConstantesConciliacion.guardar(conciliacionDto)) {
                     mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_INSERT_OK );
                     mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
                 }else{
@@ -84,23 +86,15 @@ public class ConciliacionServiceImpl implements IConciliacionService {
     @Override
     public Object actualizarConciliacion(ConciliacionDto conciliacionDto) {
         Map<String, Object> mapResponse = new HashMap<>();
-        Optional<ConciliacionEntity> optional = null;
+
         try {
-            //optional = conciliacionRepository.findById(conciliacionDto.getIdConciliacion());
-
-            if (!optional.isPresent()) {
-                mapResponse.put(ConstantesGenericas.MENSAJE, "Conciliación no encontrada.");
+            if (ConstantesConciliacion.actualizarPorId(conciliacionDto)) {
+                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_UPDATE_OK);
+                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK);
+            }else {
+                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_UPDATE_ERROR_CONCILIACION);
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_ERROR_BD);
-                return mapResponse;
             }
-
-            ConciliacionEntity entityExistente = optional.get();
-            entityExistente.setNombreConciliacion(conciliacionDto.getNombreConciliacion());
-            entityExistente.setFechaModificacion(new Date());
-            //conciliacionRepository.save(entityExistente);
-
-            mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_UPDATE_OK);
-            mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK);
 
         } catch (Exception e) {
             mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_BASE_DATOS);
@@ -114,10 +108,10 @@ public class ConciliacionServiceImpl implements IConciliacionService {
     @Override
     public Object consultarConciliacion() {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        List<ConciliacionEntity> listConciliacion = null;
+        List<ConciliacionDto> listConciliacion = null;
         try{
             //listConciliacion = conciliacionRepository.consultarConcilaciones();
-
+            listConciliacion = ConstantesConciliacion.consultarConciliacion();
             if(listConciliacion != null && !listConciliacion.isEmpty()){
                 mapResponse.put(ConstantesConciliacion.LISTA_CONCILIACION, listConciliacion );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
@@ -136,18 +130,17 @@ public class ConciliacionServiceImpl implements IConciliacionService {
     }
 
     @Override
-    public Object eliminarConciliacion(Integer id) {
+    public Object eliminarConciliacion(Long id) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         try{
 
-//            if(conciliacionRepository.existsById(id)){
-//                conciliacionRepository.deleteById(id);
-//                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_DELETE_CONCILIACION );
-//                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
-//            }else{
-//                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_DELETE_CONCILIACION);
-//                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
-//            }
+            if(ConstantesConciliacion.eliminarPorId(id)){
+                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_DELETE_CONCILIACION );
+                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
+            }else{
+                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_DELETE_CONCILIACION);
+                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
+            }
 
         } catch (Exception e) {
             mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_BASE_DATOS );

@@ -37,6 +37,10 @@ public final class ConstantesTipoParametro {
 
     public static final String MENSAJE_LISTA_TIPO_PARAMETRO = "No hay parametros registrados";
 
+    public static final  String TIPO_PARAMETRO = "tipo parametro";
+
+    public static final String MENSAJE_TIPO_PARAMETRO = "No existe el tipo parametro a consultar";
+
     public static List<TipoParametroDto> listarTipoParametro(){
 
         String nombreArchivo = "TBTipoparametro.parquet";
@@ -84,7 +88,7 @@ public final class ConstantesTipoParametro {
         return listTipoParametro;
     }
 
-    public static TipoParametroDto consultarConexionesPorId(Long id){
+    public static TipoParametroDto consultarTipoParametroPorId(Long id){
 
         String nombreArchivo = "TBTipoparametro.parquet";
 
@@ -96,7 +100,7 @@ public final class ConstantesTipoParametro {
 
         schema = Schema.createRecord("recordName", "myrecordname", "org.myorganization.mynamespace", false);
 
-        Class<?> miClase = ConexionDto.class;
+        Class<?> miClase = TipoParametroDto.class;
         for(java.lang.reflect.Field campo:miClase.getDeclaredFields()){
             listField.add(new Schema.Field(campo.getName(), Schema.create(Schema.Type.STRING), null, null) );
         }

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Service;
 public interface ITipoParametroServicie {
 
     public Object consultarTiposParametros();
+
+    public Object consultarTipoParametroByid(Long id);
 }

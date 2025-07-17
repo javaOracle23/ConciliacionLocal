@@ -15,5 +15,5 @@ public interface IConciliacionService {
 
     public Object consultarConciliacion();
 
-    public Object eliminarConciliacion(Integer id);
+    public Object eliminarConciliacion(Long id);
 }

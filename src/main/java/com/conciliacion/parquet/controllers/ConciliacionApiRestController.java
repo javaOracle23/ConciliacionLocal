@@ -35,7 +35,7 @@ public class ConciliacionApiRestController {
     }
 
     @DeleteMapping(value ="/eliminarConciliacion/{ID}")
-    public ResponseEntity<Object> eliminarConciliacion(@PathVariable(value = "ID") Integer id) throws Exception {
+    public ResponseEntity<Object> eliminarConciliacion(@PathVariable(value = "ID") Long id) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(iConciliacionService.eliminarConciliacion(id));
     }
 }
