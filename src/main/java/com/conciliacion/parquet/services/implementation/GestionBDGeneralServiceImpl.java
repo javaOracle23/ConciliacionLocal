@@ -66,22 +66,28 @@ public class GestionBDGeneralServiceImpl implements IGestionBDGeneral {
         AchivoExtraccionEntity achivoExtraccionEntity = new AchivoExtraccionEntity();
         achivoExtraccionEntity.setId_extraccion(null);
         achivoExtraccionEntity.setIdConciliacion(parametrizacionEntity.getIdConciliacion());
-        achivoExtraccionEntity.setNombreOrigen(ConstantesRepositorioAzure.ARCHIVO_ORIGEN);
-        achivoExtraccionEntity.setNombreDestino(ConstantesRepositorioAzure.ARCHIVO_DESTINO);
-        //achivoExtraccionEntity = achivoExtraccionRepository.save(achivoExtraccionEntity);
-        Map<String, Object> mapArchivoOrigen = (Map<String, Object>)iGestionFabricaBD.consultaExtraccionOrigen(conexionDto,parametrizacionEntity,iRepositorioAzure, achivoExtraccionRepository,achivoExtraccionEntity.getId_extraccion());
-        if (!mapArchivoOrigen.containsKey(ConstantesGenericas.CODIGO)) {
+        achivoExtraccionEntity.setNombreOrigen(ConstantesArchivoExtraccion.ARCHIVO_ORIGEN);
+        achivoExtraccionEntity.setNombreDestino(ConstantesArchivoExtraccion.ARCHIVO_DESTINO);
+        achivoExtraccionEntity = ConstantesArchivoExtraccion.guardar(achivoExtraccionEntity);
+        Map<String, Object> mapArchivoOrigen = (Map<String, Object>)iGestionFabricaBD.consultaExtraccionOrigen(conexionDto,parametrizacionEntity, achivoExtraccionRepository,achivoExtraccionEntity.getId_extraccion());
+        if (mapArchivoOrigen.containsKey(ConstantesGenericas.CODIGO)) {
             Object objCodigo = ConstantesGenericas.CODIGO;
             String codigo = mapArchivoOrigen.get(objCodigo).toString();
             if(!codigo.equalsIgnoreCase("200")){
+                if(achivoExtraccionEntity.getId_extraccion() != null){
+                    ConstantesArchivoExtraccion.eliminarPorId(Long.valueOf(achivoExtraccionEntity.getId_extraccion()));
+                }
                 return mapArchivoOrigen;
             }
         }
         Map<String, Object> mapArchivoDestino = (Map<String, Object>) extraerGenerarArchivoDestinoPorIdConciliacion(parametrizacionEntity,achivoExtraccionEntity.getId_extraccion());
-        if (!mapArchivoDestino.containsKey(ConstantesGenericas.CODIGO)) {
+        if (mapArchivoDestino.containsKey(ConstantesGenericas.CODIGO)) {
             Object objCodigo = ConstantesGenericas.CODIGO;
             String codigo = mapArchivoDestino.get(objCodigo).toString();
             if(!codigo.equalsIgnoreCase("200")){
+                if(achivoExtraccionEntity.getId_extraccion() != null){
+                    ConstantesArchivoExtraccion.eliminarPorId(Long.valueOf(achivoExtraccionEntity.getId_extraccion()));
+                }
                 return mapArchivoDestino;
             }
         }
@@ -107,7 +113,7 @@ public class GestionBDGeneralServiceImpl implements IGestionBDGeneral {
                 return ValidarTipoConexion.mensajeTipoConexionVacia();
             }
         }
-        return iGestionFabricaBD.consultaExtraccionDestino(conexionDto,parametrizacionEntity,iRepositorioAzure, achivoExtraccionRepository,id_extraccion);
+        return iGestionFabricaBD.consultaExtraccionDestino(conexionDto,parametrizacionEntity, achivoExtraccionRepository,id_extraccion);
 
     }
 }

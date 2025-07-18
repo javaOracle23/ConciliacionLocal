@@ -342,8 +342,9 @@ public final class ConstantesConexion {
                     conexionDto.setNombreBaseDeDatos(rec.get(5).toString());
                     conexionDto.setUsuario(rec.get(6).toString());
                     conexionDto.setClave(rec.get(7).toString());
-                    String fechaCreacion = rec.get(8).toString();
-                    String fechaModificacion = rec.get(9).toString();
+                    conexionDto.setJsonBigQuery(rec.get(8).toString());
+                    String fechaCreacion = rec.get(9).toString();
+                    String fechaModificacion = rec.get(10).toString();
 
                     try {
                         dateCreacion = formatter.parse(fechaCreacion);
@@ -417,8 +418,9 @@ public final class ConstantesConexion {
                         conexionDto.setNombreBaseDeDatos(rec.get(5).toString());
                         conexionDto.setUsuario(rec.get(6).toString());
                         conexionDto.setClave(rec.get(7).toString());
-                        String fechaCreacion = rec.get(8).toString();
-                        String fechaModificacion = rec.get(9).toString();
+                        conexionDto.setJsonBigQuery(rec.get(8).toString());
+                        String fechaCreacion = rec.get(9).toString();
+                        String fechaModificacion = rec.get(10).toString();
 
                         try {
                             dateCreacion = formatter.parse(fechaCreacion);

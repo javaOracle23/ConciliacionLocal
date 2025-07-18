@@ -54,5 +54,17 @@ public class Util {
         return query.toString();
     }
 
+    public static String obtenerSubcadena(String palabraInicio,String palabraFin,String texto){
+
+        int inicio = texto.indexOf(palabraInicio);
+        int fin = texto.indexOf(palabraFin);
+        String subcadena = "";
+        if (inicio != -1 && fin != -1) {
+            inicio += palabraInicio.length();
+            subcadena = texto.substring(inicio, fin);
+        }
+        return subcadena;
+    }
+
 
 }

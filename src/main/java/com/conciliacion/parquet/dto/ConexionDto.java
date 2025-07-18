@@ -31,6 +31,7 @@ public class ConexionDto implements Serializable {
 
     private String clave;
 
+    private String jsonBigQuery;
 
     private Date fechaCreacion;
 
@@ -83,6 +84,14 @@ public class ConexionDto implements Serializable {
 
     public void setNombreBaseDeDatos(String nombreBaseDeDatos) {
         this.nombreBaseDeDatos = nombreBaseDeDatos;
+    }
+
+    public String getJsonBigQuery() {
+        return jsonBigQuery;
+    }
+
+    public void setJsonBigQuery(String jsonBigQuery) {
+        this.jsonBigQuery = jsonBigQuery;
     }
 
     public String getUsuario() {

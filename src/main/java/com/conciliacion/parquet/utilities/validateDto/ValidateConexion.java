@@ -44,4 +44,33 @@ public class ValidateConexion {
         return "";
     }
 
+
+    public static String ValidateConexionBigQuery(ConexionDto conexionDto){
+
+        boolean esObligatorio = false;
+
+        if(!Util.validarNumeroEnteroVacio (conexionDto.getIdTipoConexion())){
+            esObligatorio = true;
+        }
+
+        if(!Util.validarCadenaVacia(conexionDto.getNombre())){
+            esObligatorio = true;
+        }
+
+
+        if(!Util.validarCadenaVacia(conexionDto.getNombreBaseDeDatos())){
+            esObligatorio = true;
+        }
+
+        if(!Util.validarCadenaVacia(conexionDto.getJsonBigQuery() )){
+            esObligatorio = true;
+        }
+
+
+        if(esObligatorio){
+            return ConstantesGenericas.MENSAJE_CAMPOS_OBLIGATORIOS;
+        }
+        return "";
+    }
+
 }

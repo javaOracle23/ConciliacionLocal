@@ -1,5 +1,7 @@
 package com.conciliacion.parquet.utilities;
 
+import com.conciliacion.parquet.services.implementation.GestionBDBigQueryImpl;
+import com.conciliacion.parquet.services.implementation.GestionBDPOSTGRESSQLServerImpl;
 import com.conciliacion.parquet.services.implementation.GestionBDSQLServerImpl;
 import com.conciliacion.parquet.services.interfaces.IGestionFabricaBD;
 
@@ -12,7 +14,12 @@ public class ValidarTipoConexion {
         IGestionFabricaBD iGestionBDIndependientes = null;
         if(nombreTipoConexion.equalsIgnoreCase("SQLSERVER")  ){
             iGestionBDIndependientes = new GestionBDSQLServerImpl();
+        }else if(nombreTipoConexion.equalsIgnoreCase("POSTGRESQL")  ){
+            iGestionBDIndependientes = new GestionBDPOSTGRESSQLServerImpl();
+        }else if(nombreTipoConexion.equalsIgnoreCase("BIGQUERY")  ){
+            iGestionBDIndependientes = new GestionBDBigQueryImpl();
         }
+
         return iGestionBDIndependientes;
     }
 

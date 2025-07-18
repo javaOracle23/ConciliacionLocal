@@ -14,9 +14,9 @@ public interface IGestionFabricaBD {
 
     public Object consultaColumnas(ConexionDto conexionDto, String consultaColumnas, String nombreTablaBD);
 
-    public Object consultaExtraccionOrigen(ConexionDto conexionDto, ParametrizacionEntity parametrizacionEntity, IRepositorioAzure iRepositorioAzure, AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion);
+    public Object consultaExtraccionOrigen(ConexionDto conexionDto, ParametrizacionEntity parametrizacionEntity,  AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion);
 
-    public Object consultaExtraccionDestino(ConexionDto conexionDto, ParametrizacionEntity parametrizacionEntity, IRepositorioAzure iRepositorioAzure, AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion);
+    public Object consultaExtraccionDestino(ConexionDto conexionDto, ParametrizacionEntity parametrizacionEntity,  AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion);
 
 
 }

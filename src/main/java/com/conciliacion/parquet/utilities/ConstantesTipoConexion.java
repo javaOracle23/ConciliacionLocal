@@ -28,7 +28,7 @@ public final class ConstantesTipoConexion {
 
     public static List<TipoConexionEntity> consultarTiposConexion(){
 
-        String nombreArchivo = "TBTipoConexion.parquet";
+        String nombreArchivo = "TBTipo_conexion.parquet";
 
         org.apache.hadoop.fs.Path path= null;
         Schema schema = null;
@@ -75,7 +75,7 @@ public final class ConstantesTipoConexion {
 
     public static  TipoConexionEntity consultarTipoConexionPorId(Long id){
 
-        String nombreArchivo = "TBPTipoConexion.parquet";
+        String nombreArchivo = "TBTipo_conexion.parquet";
 
         org.apache.hadoop.fs.Path path= null;
         Schema schema = null;

@@ -26,17 +26,17 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.nio.file.Path;
 import java.sql.*;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-
 @Service
-public class GestionBDSQLServerImpl implements IGestionFabricaBD {
+public class GestionBDPOSTGRESSQLServerImpl implements IGestionFabricaBD {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(GestionBDSQLServerImpl.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(GestionBDPOSTGRESSQLServerImpl.class);
 
 
     @Autowired(required=false)
@@ -46,12 +46,12 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
     public Object probarConexion(ConexionDto conexionDto) {
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        String connectionUrl = ConstantesSQLServer.obtenerConexionSQLServer(conexionDto);
+        String connectionUrl = ConstantesPostgreSQL.obtenerConexionPostgreSQL(conexionDto);
         Connection con = null;
 
         try {
-            Class.forName(ConstantesSQLServer.driverSqlServer);
-            con = DriverManager.getConnection(connectionUrl);
+            Class.forName(ConstantesPostgreSQL.driverPostgreSql);
+            con = DriverManager.getConnection(connectionUrl,conexionDto.getUsuario(),conexionDto.getClave());
             if (con != null) {
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_CONEXION_OK );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
@@ -81,13 +81,13 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
     @Override
     public Object consultaTablas(ConexionDto conexionDto,String consultaTablas) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        String connectionUrl = ConstantesSQLServer.obtenerConexionSQLServer(conexionDto);
+        String connectionUrl = ConstantesPostgreSQL.obtenerConexionPostgreSQL(conexionDto);
         Connection con = null;
         ResultSet rs = null;
         ArrayList<String> listTablas = new ArrayList<>();
         try {
-            Class.forName(ConstantesSQLServer.driverSqlServer);
-            con = DriverManager.getConnection(connectionUrl);
+            Class.forName(ConstantesPostgreSQL.driverPostgreSql);
+            con = DriverManager.getConnection(connectionUrl,conexionDto.getUsuario(),conexionDto.getClave());
             if (con != null) {
                 rs = con.createStatement().executeQuery(consultaTablas);
                 while (rs.next()) {
@@ -128,13 +128,13 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
     @Override
     public Object consultaColumnas(ConexionDto conexionDto,String consultaColumnas,String nombreTablaBD) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        String connectionUrl = ConstantesSQLServer.obtenerConexionSQLServer(conexionDto);
+        String connectionUrl = ConstantesPostgreSQL.obtenerConexionPostgreSQL(conexionDto);
         Connection con = null;
         ResultSet resultSet = null;
         ArrayList<String> listColumnas = new ArrayList<>();
         try {
-            Class.forName(ConstantesSQLServer.driverSqlServer);
-            con = DriverManager.getConnection(connectionUrl);
+            Class.forName(ConstantesPostgreSQL.driverPostgreSql);
+            con = DriverManager.getConnection(connectionUrl,conexionDto.getUsuario(),conexionDto.getClave());
             if (con != null) {
                 if(nombreTablaBD.contains(".")){
                     String cadenaTabla[] = nombreTablaBD.split("\\.");
@@ -205,12 +205,12 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
             return mapResponse;
         }
 
-        String connectionUrl = ConstantesSQLServer.obtenerConexionSQLServer(conexionDto);
+        String connectionUrl = ConstantesPostgreSQL.obtenerConexionPostgreSQL(conexionDto);
         Connection con = null;
         ResultSet resultSet = null;
         try {
-            Class.forName(ConstantesSQLServer.driverSqlServer);
-            con = DriverManager.getConnection(connectionUrl);
+            Class.forName(ConstantesPostgreSQL.driverPostgreSql);
+            con = DriverManager.getConnection(connectionUrl,conexionDto.getUsuario(),conexionDto.getClave());
             if (con != null) {
                 resultSet = con.createStatement().executeQuery(query);
                 ResultSetMetaData metaDatos = resultSet.getMetaData();
@@ -258,9 +258,9 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
 
             }
         }catch (Exception e) {
-//            if(id_extraccion != null){
-//                achivoExtraccionRepository.deleteById(id_extraccion.longValue());
-//            }
+            if(id_extraccion != null){
+                ConstantesArchivoExtraccion.eliminarPorId(Long.valueOf(id_extraccion));
+            }
             mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_ARCHIVO_EXTRACCION);
             mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
             LOGGER.error(ConstantesGenericas.MENSAJE , e.getMessage());
@@ -283,7 +283,7 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
     }
 
     @Override
-    public Object consultaExtraccionDestino(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity, AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion) {
+    public Object consultaExtraccionDestino(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity,AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         String jsonSolicitudDestino = parametrizacionEntity.getDataSolicitudDestino();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -308,12 +308,12 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
             return mapResponse;
         }
 
-        String connectionUrl = ConstantesSQLServer.obtenerConexionSQLServer(conexionDto);
+        String connectionUrl = ConstantesPostgreSQL.obtenerConexionPostgreSQL(conexionDto);
         Connection con = null;
         ResultSet resultSet = null;
         try {
-            Class.forName(ConstantesSQLServer.driverSqlServer);
-            con = DriverManager.getConnection(connectionUrl);
+            Class.forName(ConstantesPostgreSQL.driverPostgreSql);
+            con = DriverManager.getConnection(connectionUrl,conexionDto.getUsuario(),conexionDto.getClave());
             if (con != null) {
                 resultSet = con.createStatement().executeQuery(query);
                 ResultSetMetaData metaDatos = resultSet.getMetaData();
@@ -361,9 +361,9 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
             }
         }catch (Exception e) {
-//            if(id_extraccion != null){
-//                achivoExtraccionRepository.deleteById(id_extraccion.longValue());
-//            }
+            if(id_extraccion != null){
+                ConstantesArchivoExtraccion.eliminarPorId(Long.valueOf(id_extraccion));
+            }
             mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_ARCHIVO_EXTRACCION);
             mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
             LOGGER.error(ConstantesGenericas.MENSAJE , e.getMessage());
@@ -384,6 +384,5 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
 
         return mapResponse;
     }
-
 
 }

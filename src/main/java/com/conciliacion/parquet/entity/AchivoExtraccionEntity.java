@@ -6,7 +6,6 @@ import java.io.Serializable;
 //@Table(schema = ConstantesConexion.NOMBRE_SCHEMA_DATABASE_CONCILIACION, name = "archivo_extraccion")
 public class AchivoExtraccionEntity implements Serializable {
 
-    private static final long serialVersionUID = 1l;
 
     //@Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)

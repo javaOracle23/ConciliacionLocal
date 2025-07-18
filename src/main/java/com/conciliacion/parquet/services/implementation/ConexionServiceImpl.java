@@ -3,6 +3,7 @@ package com.conciliacion.parquet.services.implementation;
 import com.conciliacion.parquet.converter.implementation.ConexionConvetImpl;
 import com.conciliacion.parquet.dto.ConexionDto;
 import com.conciliacion.parquet.entity.ConexionEntity;
+import com.conciliacion.parquet.entity.TipoConexionEntity;
 import com.conciliacion.parquet.repository.ConexionRepository;
 import com.conciliacion.parquet.services.interfaces.IConexionService;
 import com.conciliacion.parquet.utilities.ConstantesConexion;
@@ -36,18 +37,25 @@ public class ConexionServiceImpl implements IConexionService {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         ConexionConvetImpl conexionConvetImpl = null;
         ConexionEntity conexionEntity =  null;
+        String msgValidacion = "";
 
-        String msgValidacion = ValidateConexion.ValidateConexion(conexionDto);
+        Map<String, Object> mapTipoConexion = (Map<String, Object>)tipoConexionServiceImpl.obtenerTipoConexion(conexionDto.getIdTipoConexion());
+        if (!mapTipoConexion.containsKey(ConstantesTipoConexion.DATOS_TIPO_CONEXION)) {
+            return ResponseEntity.status(HttpStatus.OK).body(mapTipoConexion);
+        }
+        TipoConexionEntity tipoConexionEntity =  (TipoConexionEntity)mapTipoConexion.get(ConstantesTipoConexion.DATOS_TIPO_CONEXION);
+        if(!tipoConexionEntity.getNombre().equalsIgnoreCase("BIGQUERY")  ){
+            msgValidacion = ValidateConexion.ValidateConexion(conexionDto);
+        }else{
+            msgValidacion = ValidateConexion.ValidateConexionBigQuery(conexionDto);
+        }
+
         if(!msgValidacion.isEmpty()) {
             mapResponse.put(ConstantesGenericas.MENSAJE, msgValidacion);
             mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_DATOS_INVALIDOS );
             return mapResponse;
         }
 
-//        Map<String, Object> mapTipoConexion = (Map<String, Object>)tipoConexionServiceImpl.obtenerTipoConexion(conexionDto.getIdTipoConexion());
-//        if (!mapTipoConexion.containsKey(ConstantesTipoConexion.DATOS_TIPO_CONEXION)) {
-//            return ResponseEntity.status(HttpStatus.OK).body(mapTipoConexion);
-//        }
 
         try{
             //conexionEntity = conexionRepository.consultarConexion(conexionDto.getNombre() ,conexionDto.getHost(),conexionDto.getPuerto());
