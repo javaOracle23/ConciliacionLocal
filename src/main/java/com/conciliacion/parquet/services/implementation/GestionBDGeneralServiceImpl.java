@@ -43,12 +43,13 @@ public class GestionBDGeneralServiceImpl implements IGestionBDGeneral {
     @Override
     public Object extraerGenerarArchivoOrigenPorIdConciliacion(Integer idConciliacion) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        Map<String, Object> mapParametrizacionConciliacion = (Map<String, Object>)parametrizacionServiceImpl.consultarParametrizacionPorIdConciliacion(idConciliacion);
-        if (!mapParametrizacionConciliacion.containsKey(ConstantesParametrizacion.PARAMETRIZACION)) {
-            return mapParametrizacionConciliacion;
-        }
+        //Map<String, Object> mapParametrizacionConciliacion = (Map<String, Object>)parametrizacionServiceImpl.consultarParametrizacionPorIdConciliacion(idConciliacion);
+        ParametrizacionEntity parametrizacionEntity = ConstantesParametrizacion.consultarParametrizacionPorIdConciliacion(Long.valueOf(idConciliacion));
+//        if (!mapParametrizacionConciliacion.containsKey(ConstantesParametrizacion.PARAMETRIZACION)) {
+//            return mapParametrizacionConciliacion;
+//        }
 
-        ParametrizacionEntity parametrizacionEntity = (ParametrizacionEntity)mapParametrizacionConciliacion.get(ConstantesParametrizacion.PARAMETRIZACION);
+        //ParametrizacionEntity parametrizacionEntity = (ParametrizacionEntity)mapParametrizacionConciliacion.get(ConstantesParametrizacion.PARAMETRIZACION);
         Map<String, Object> mapConexion = (Map<String, Object>)conexionServiceImpl.obtenerConexion(parametrizacionEntity.getIdConexion1());
         if (!mapConexion.containsKey(ConstantesConexion.DATOS_CONEXION)) {
             return mapConexion;

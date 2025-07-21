@@ -58,6 +58,7 @@ public final class ConstantesTipoConexion {
 
                     tipoConexionEntity = new TipoConexionEntity();
                     String ID_Tipo_Conexion =  rec.get(0).toString();
+                    tipoConexionEntity.setID_Tipo_Conexion(Integer.parseInt(ID_Tipo_Conexion));
                     tipoConexionEntity.setNombre( rec.get(1).toString());
                     tipoConexionEntity.setConsultaTablas(rec.get(2).toString());
                     tipoConexionEntity.setConsultaColumnas(rec.get(3).toString());
@@ -108,6 +109,7 @@ public final class ConstantesTipoConexion {
                     if(id_parametros_ejecutados.equalsIgnoreCase(idBusqueda)) {
                         tipoConexionEntity = new TipoConexionEntity();
                         String ID_Tipo_Conexion =  rec.get(0).toString();
+                        tipoConexionEntity.setID_Tipo_Conexion(Integer.parseInt(ID_Tipo_Conexion));
                         tipoConexionEntity.setNombre( rec.get(1).toString());
                         tipoConexionEntity.setConsultaTablas(rec.get(2).toString());
                         tipoConexionEntity.setConsultaColumnas(rec.get(3).toString());

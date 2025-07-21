@@ -258,9 +258,10 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
         List<String> columns = null;
         File outputFiles = null;
         try {
-           columns = parametrosTXTDto.getColumns();
+
             if(parametrizacionEntity.getIdParameto().intValue() == 1){
                 parametrosSQLDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosSQLDto.class);
+                //columns = parametrosTXTDto.getColumns();
                 query = parametrosSQLDto.getQuery();
                 String palabraInicio = "SELECT";
                 String palabraFin = "FROM";
@@ -281,7 +282,7 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
         }
         List<Field> listField = new ArrayList<>();
         for (String columna:columns) {
-            listField.add(new Field(columna, Schema.create(Schema.Type.STRING), null, null) );
+            listField.add(new Field(columna.trim(), Schema.create(Schema.Type.STRING), null, null) );
         }
         Schema schema = Schema.createRecord("recordName", "myrecordname", "org.myorganization.mynamespace", false);
         schema.setFields(listField);
@@ -350,13 +351,15 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
                 String nombreColumna = "";
                 String valor = "";
                 int i = 0;
-                record = new GenericData.Record(schema);
+
                 for (FieldValueList row : result.iterateAll()) {
                     i = 0;
+                    record = new GenericData.Record(schema);
                     for (String columna:columns) {
                         nombreColumna = columns.get(i);
                         valor = row.get(i).getValue().toString();
-                        record.put(nombreColumna, valor);
+                        record.put(nombreColumna.trim(), valor);
+                        i++;
                     }
                     writer.write(record);
                 }
