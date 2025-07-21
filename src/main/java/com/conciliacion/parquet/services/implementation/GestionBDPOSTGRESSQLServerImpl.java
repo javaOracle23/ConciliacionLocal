@@ -179,24 +179,32 @@ public class GestionBDPOSTGRESSQLServerImpl implements IGestionFabricaBD {
     }
 
     @Override
-    public Object consultaExtraccionOrigen(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity, AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion) {
+    public Object consultaExtraccionOrigen(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity, AchivoExtraccionEntity achivoExtraccionEntity) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         String jsonSolicitudOrigen = parametrizacionEntity.getDataSolicitudOrigen();
         ObjectMapper objectMapper = new ObjectMapper();
         ParametrosSQLDto parametrosSQLDto = null;
         ParametrosTXTDto parametrosTXTDto = null;
         ArrayList<String> listDatos = new ArrayList<>();
-        AchivoExtraccionEntity achivoExtraccionEntity = null;
+
         String nombreArchivo = null;
         String query = null;
+        List<String> keys = null;
         try {
             if(parametrizacionEntity.getIdParameto().intValue() == 1){
                 parametrosSQLDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosSQLDto.class);
                 query = parametrosSQLDto.getQuery();
+                keys = parametrosSQLDto.getKeys();
             }else if(parametrizacionEntity.getIdParameto().intValue() == 2){
                 parametrosTXTDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosTXTDto.class);
                 query = Util.construirQuery(parametrosTXTDto);
+                keys = parametrosTXTDto.getKeys();
+
             }
+
+            String cadenaKeys = String.join(", ", keys);
+            achivoExtraccionEntity.setKeys(cadenaKeys);
+            achivoExtraccionEntity = ConstantesArchivoExtraccion.guardar(achivoExtraccionEntity);
 
         } catch (JsonProcessingException e) {
             mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_JSON_MAP );
@@ -224,7 +232,7 @@ public class GestionBDPOSTGRESSQLServerImpl implements IGestionFabricaBD {
                 Schema schema = Schema.createRecord("recordName", "myrecordname", "org.myorganization.mynamespace", false);
                 schema.setFields(listField);
 
-                nombreArchivo = id_extraccion + "_" + ConstantesArchivoExtraccion.ARCHIVO_ORIGEN;
+                nombreArchivo = achivoExtraccionEntity.getId_extraccion() + "_" + ConstantesArchivoExtraccion.ARCHIVO_ORIGEN;
 
                 File outputFiles = new File(nombreArchivo);
 
@@ -258,9 +266,6 @@ public class GestionBDPOSTGRESSQLServerImpl implements IGestionFabricaBD {
 
             }
         }catch (Exception e) {
-            if(id_extraccion != null){
-                ConstantesArchivoExtraccion.eliminarPorId(Long.valueOf(id_extraccion));
-            }
             mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_ARCHIVO_EXTRACCION);
             mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
             LOGGER.error(ConstantesGenericas.MENSAJE , e.getMessage());
@@ -283,7 +288,7 @@ public class GestionBDPOSTGRESSQLServerImpl implements IGestionFabricaBD {
     }
 
     @Override
-    public Object consultaExtraccionDestino(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity,AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion) {
+    public Object consultaExtraccionDestino(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity,Integer id_extraccion) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         String jsonSolicitudDestino = parametrizacionEntity.getDataSolicitudDestino();
         ObjectMapper objectMapper = new ObjectMapper();

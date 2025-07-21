@@ -4,17 +4,17 @@ import java.util.List;
 
 public class ParametrosTXTDto {
 
-    private List<String> key;
+    private List<String> keys;
     private String table_name;
     private List<String> columns;
     private List<String> alias;
 
-    public List<String> getKey() {
-        return key;
+    public List<String> getKeys() {
+        return keys;
     }
 
-    public void setKey(List<String> key) {
-        this.key = key;
+    public void setKeys(List<String> keys) {
+        this.keys = keys;
     }
 
     public String getTable_name() {

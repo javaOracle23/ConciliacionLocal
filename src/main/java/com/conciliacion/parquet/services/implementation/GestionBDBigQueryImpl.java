@@ -247,7 +247,7 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
     }
 
     @Override
-    public Object consultaExtraccionOrigen(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity, AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion) {
+    public Object consultaExtraccionOrigen(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity, AchivoExtraccionEntity achivoExtraccionEntity) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         String jsonSolicitudOrigen = parametrizacionEntity.getDataSolicitudOrigen();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -257,23 +257,35 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
         String query = null;
         List<String> columns = null;
         File outputFiles = null;
+        List<String> keys = null;
         try {
 
             if(parametrizacionEntity.getIdParameto().intValue() == 1){
                 parametrosSQLDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosSQLDto.class);
                 //columns = parametrosTXTDto.getColumns();
                 query = parametrosSQLDto.getQuery();
-                String palabraInicio = "SELECT";
-                String palabraFin = "FROM";
-                String columnas = Util.obtenerSubcadena(palabraInicio.toLowerCase(),palabraFin.toLowerCase(),query.toLowerCase());
-                if(columnas.contains(",")) {
-                    columns = Arrays.stream(columnas.split(",")).toList();
+                if(query.contains("*")){
+                    columns = parametrosSQLDto.getColumns();
+                }else{
+                    String palabraInicio = "SELECT";
+                    String palabraFin = "FROM";
+                    String columnas = Util.obtenerSubcadena(palabraInicio.toLowerCase(),palabraFin.toLowerCase(),query.toLowerCase());
+                    if(columnas.contains(",")) {
+                        columns = Arrays.stream(columnas.split(",")).toList();
+                    }
                 }
+                keys = parametrosSQLDto.getKeys();
             }else if(parametrizacionEntity.getIdParameto().intValue() == 2){
                 parametrosTXTDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosTXTDto.class);
                 query = Util.construirQuery(parametrosTXTDto);
                 columns = parametrosTXTDto.getColumns();
+                keys = parametrosTXTDto.getKeys();
             }
+
+            String cadenaKeys = String.join(", ", keys);
+            achivoExtraccionEntity.setKeys(cadenaKeys);
+            achivoExtraccionEntity = ConstantesArchivoExtraccion.guardar(achivoExtraccionEntity);
+
         } catch (JsonProcessingException e) {
             mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_JSON_MAP );
             mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_DATOS_INVALIDOS );
@@ -286,7 +298,7 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
         }
         Schema schema = Schema.createRecord("recordName", "myrecordname", "org.myorganization.mynamespace", false);
         schema.setFields(listField);
-        nombreArchivo = id_extraccion + "_" + ConstantesArchivoExtraccion.ARCHIVO_ORIGEN;
+        nombreArchivo = achivoExtraccionEntity.getId_extraccion() + "_" + ConstantesArchivoExtraccion.ARCHIVO_ORIGEN;
 
         outputFiles = new File(nombreArchivo);
 
@@ -376,7 +388,7 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
     }
 
     @Override
-    public Object consultaExtraccionDestino(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity, AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion) {
+    public Object consultaExtraccionDestino(ConexionDto conexionDto,ParametrizacionEntity parametrizacionEntity, Integer id_extraccion) {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         String jsonSolicitudDestino = parametrizacionEntity.getDataSolicitudDestino();
         ObjectMapper objectMapper = new ObjectMapper();

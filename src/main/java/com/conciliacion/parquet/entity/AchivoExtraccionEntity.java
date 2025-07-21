@@ -15,6 +15,8 @@ public class AchivoExtraccionEntity implements Serializable {
     //@Column(name = "id_conciliacion")
     private Integer idConciliacion;
 
+    private String keys;
+
     //@Column(name = "nombre_origen")
     private String nombreOrigen;
 
@@ -35,6 +37,14 @@ public class AchivoExtraccionEntity implements Serializable {
 
     public void setIdConciliacion(Integer idConciliacion) {
         this.idConciliacion = idConciliacion;
+    }
+
+    public String getKeys() {
+        return keys;
+    }
+
+    public void setKeys(String keys) {
+        this.keys = keys;
     }
 
     public String getNombreOrigen() {

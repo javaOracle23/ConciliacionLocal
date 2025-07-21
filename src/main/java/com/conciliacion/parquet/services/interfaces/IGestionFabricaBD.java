@@ -1,6 +1,7 @@
 package com.conciliacion.parquet.services.interfaces;
 
 import com.conciliacion.parquet.dto.ConexionDto;
+import com.conciliacion.parquet.entity.AchivoExtraccionEntity;
 import com.conciliacion.parquet.entity.ParametrizacionEntity;
 import com.conciliacion.parquet.repository.AchivoExtraccionRepository;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,9 @@ public interface IGestionFabricaBD {
 
     public Object consultaColumnas(ConexionDto conexionDto, String consultaColumnas, String nombreTablaBD);
 
-    public Object consultaExtraccionOrigen(ConexionDto conexionDto, ParametrizacionEntity parametrizacionEntity,  AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion);
+    public Object consultaExtraccionOrigen(ConexionDto conexionDto, ParametrizacionEntity parametrizacionEntity,  AchivoExtraccionEntity achivoExtraccionEntity);
 
-    public Object consultaExtraccionDestino(ConexionDto conexionDto, ParametrizacionEntity parametrizacionEntity,  AchivoExtraccionRepository achivoExtraccionRepository,Integer id_extraccion);
+    public Object consultaExtraccionDestino(ConexionDto conexionDto, ParametrizacionEntity parametrizacionEntity, Integer id_extraccion);
 
 
 }

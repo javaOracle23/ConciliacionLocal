@@ -69,8 +69,7 @@ public class GestionBDGeneralServiceImpl implements IGestionBDGeneral {
         achivoExtraccionEntity.setIdConciliacion(parametrizacionEntity.getIdConciliacion());
         achivoExtraccionEntity.setNombreOrigen(ConstantesArchivoExtraccion.ARCHIVO_ORIGEN);
         achivoExtraccionEntity.setNombreDestino(ConstantesArchivoExtraccion.ARCHIVO_DESTINO);
-        achivoExtraccionEntity = ConstantesArchivoExtraccion.guardar(achivoExtraccionEntity);
-        Map<String, Object> mapArchivoOrigen = (Map<String, Object>)iGestionFabricaBD.consultaExtraccionOrigen(conexionDto,parametrizacionEntity, achivoExtraccionRepository,achivoExtraccionEntity.getId_extraccion());
+        Map<String, Object> mapArchivoOrigen = (Map<String, Object>)iGestionFabricaBD.consultaExtraccionOrigen(conexionDto,parametrizacionEntity,achivoExtraccionEntity);
         if (mapArchivoOrigen.containsKey(ConstantesGenericas.CODIGO)) {
             Object objCodigo = ConstantesGenericas.CODIGO;
             String codigo = mapArchivoOrigen.get(objCodigo).toString();
@@ -114,7 +113,7 @@ public class GestionBDGeneralServiceImpl implements IGestionBDGeneral {
                 return ValidarTipoConexion.mensajeTipoConexionVacia();
             }
         }
-        return iGestionFabricaBD.consultaExtraccionDestino(conexionDto,parametrizacionEntity, achivoExtraccionRepository,id_extraccion);
+        return iGestionFabricaBD.consultaExtraccionDestino(conexionDto,parametrizacionEntity, id_extraccion);
 
     }
 }
