@@ -36,7 +36,7 @@ public class ParametrizacionApiRestController {
 
     @GetMapping(value = "/consultaParametrizacionPorTipoParametro/{ID}")
     public ResponseEntity<Object> consultaParametrizacionPorTipoParametro(@PathVariable(value = "ID") Integer id) throws Exception{
-        return ResponseEntity.status(HttpStatus.OK).body(iParametrizacionService.consultarParametrizacionPorIdConciliacion(id));
+        return ResponseEntity.status(HttpStatus.OK).body(iParametrizacionService.consultarParametrizacionPorIdTipoParametro(id));
     }
 
     @PostMapping(value ="/guardarParametrizacion")

@@ -29,11 +29,12 @@ public class ParametrizacionServiceImpl implements IParametrizacionService {
     public Object obtenerParametrizacion(Integer idParametrizacion) {
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        ParametrizacionEntity parametrizacionEntity = null;
+        ParametrizacionDto parametrizacionDto = null;
         try{
             //parametrizacionEntity = parametrizacionRepository.obtenerParametrizacion(idParametrizacion);
-            if(parametrizacionEntity != null){
-                mapResponse.put(ConstantesParametrizacion.PARAMETRIZACION, parametrizacionEntity );
+            parametrizacionDto = ConstantesParametrizacion.consultarParametrizacionPorId(Long.valueOf(idParametrizacion));
+            if(parametrizacionDto != null){
+                mapResponse.put(ConstantesParametrizacion.PARAMETRIZACION, parametrizacionDto );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
             }else{
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesParametrizacion.MENSAJE_PARAMETRIZACION );
@@ -60,8 +61,9 @@ public class ParametrizacionServiceImpl implements IParametrizacionService {
             parametrizacionEntity = parametrizacionConvert.fromDto(parametrizacionDto);
             parametrizacionEntity.setIdParameto(null);
             //parametrizacionEntity = parametrizacionRepository.save(parametrizacionEntity);
+            ConstantesParametrizacion.guardar(parametrizacionDto);
 
-            if(parametrizacionEntity!=null) {
+            if(ConstantesParametrizacion.guardar(parametrizacionDto)) {
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesParametrizacion.MENSAJE_INSERT_OK );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
             }else{
@@ -89,7 +91,7 @@ public class ParametrizacionServiceImpl implements IParametrizacionService {
             parametrizacionEntity = parametrizacionConvert.fromDto(parametrizacionDto);
             //parametrizacionEntity = parametrizacionRepository.save(parametrizacionEntity);
 
-            if(parametrizacionEntity!=null) {
+            if(ConstantesParametrizacion.actualizarPorId(parametrizacionDto)) {
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesParametrizacion.MENSAJE_UPDATE_OK );
                 mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
             }else{
@@ -109,9 +111,10 @@ public class ParametrizacionServiceImpl implements IParametrizacionService {
     @Override
     public Object consultarParametrizacion() {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        List<ParametrizacionEntity> listParametrizacion = null;
+        List<ParametrizacionDto> listParametrizacion = null;
         try{
             //listParametrizacion = parametrizacionRepository.consultarParametrizaciones();
+            listParametrizacion = ConstantesParametrizacion.consultarParametrizaciones();
 
             if(listParametrizacion != null && !listParametrizacion.isEmpty()){
                 mapResponse.put(ConstantesParametrizacion.LISTA_PARAMETRIZACION, listParametrizacion );
@@ -143,6 +146,10 @@ public class ParametrizacionServiceImpl implements IParametrizacionService {
 //                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesParametrizacion.MENSAJE_DELETE_PARAMETRIZACION);
 //                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
 //            }
+            if(ConstantesParametrizacion.eliminarPorId(Long.valueOf(id))){
+                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesParametrizacion.MENSAJE_DELETE_PARAMETRIZACION );
+                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );
+            }
 
         } catch (Exception e) {
             mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_BASE_DATOS );

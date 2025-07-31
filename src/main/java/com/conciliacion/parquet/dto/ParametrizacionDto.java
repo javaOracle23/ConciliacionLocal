@@ -1,6 +1,7 @@
 package com.conciliacion.parquet.dto;
 
 
+import java.util.Date;
 
 public class ParametrizacionDto {
 
@@ -17,6 +18,10 @@ public class ParametrizacionDto {
     private String dataSolicitudOrigen;
 
     private String dataSolicitudDestino;
+
+    private Date fechaCreacion;
+
+    private Date fechaModificacion;
 
     public Integer getIdParameto() {
         return idParameto;
@@ -72,5 +77,20 @@ public class ParametrizacionDto {
 
     public void setDataSolicitudDestino(String dataSolicitudDestino) {
         this.dataSolicitudDestino = dataSolicitudDestino;
+    }
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 }
