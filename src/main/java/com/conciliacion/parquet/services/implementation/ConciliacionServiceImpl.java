@@ -56,12 +56,6 @@ public class ConciliacionServiceImpl implements IConciliacionService {
 
         try{
             if (!conciliacionDto.getNombreConciliacion().isEmpty()){
-//                conciliacionConvert = new ConciliacionConvertImpl();
-//                conciliacionEntity = conciliacionConvert.fromDto(conciliacionDto);
-//                conciliacionEntity.setIdConciliacion (null);
-//                conciliacionEntity.setFechaCreacion(new Date());
-                //conciliacionEntity = conciliacionRepository.save(conciliacionEntity);
-
                 if(ConstantesConciliacion.guardar(conciliacionDto)) {
                     mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConciliacion.MENSAJE_INSERT_OK );
                     mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_OK );

@@ -56,19 +56,10 @@ public class ConexionServiceImpl implements IConexionService {
             return mapResponse;
         }
 
-
         try{
-            //conexionEntity = conexionRepository.consultarConexion(conexionDto.getNombre() ,conexionDto.getHost(),conexionDto.getPuerto());
-//            if(conexionEntity!=null) {
-//                mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_INSERT_CONEXION );
-//                mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_REGISTRO_EXISTENTE );
-//                return mapResponse;
-//            }
             conexionConvetImpl = new ConexionConvetImpl();
             conexionEntity = conexionConvetImpl.fromDto(conexionDto);
             conexionEntity.setID_Conexion (1);
-
-            //conexionEntity = conexionRepository.save(conexionEntity);
 
             if(ConstantesConexion.guardar(conexionDto)) {
                 mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesConexion.MENSAJE_INSERT_OK );
@@ -129,7 +120,6 @@ public class ConexionServiceImpl implements IConexionService {
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         List<ConexionDto> listConexiones = null;
         try{
-            //listConexiones = conexionRepository.consultarConexiones();
             listConexiones = ConstantesConexion.consultarConexiones();
             if(listConexiones != null && listConexiones.size() != 0){
                 mapResponse.put(ConstantesConexion.LISTA_CONEXIONES, listConexiones );

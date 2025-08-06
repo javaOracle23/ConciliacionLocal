@@ -140,14 +140,8 @@ public class GestionBDOracle implements IGestionFabricaBD {
             con = DriverManager.getConnection(connectionUrl,conexionDto.getUsuario(),conexionDto.getClave());
             PreparedStatement consultaComplete = con.prepareStatement(consultaColumnas);
             if (con != null) {
-                if(nombreTablaBD.contains(".")){
-                    String cadenaTabla[] = nombreTablaBD.split("\\.");
-                    consultaComplete.setString(1, cadenaTabla[0].toUpperCase());
-                    consultaComplete.setString(2, cadenaTabla[1].toUpperCase());
-                }else{
-                   mapResponse.put(ConstantesGenericas.MENSAJE, "No sirvio esta joda");
-                }
-                System.out.println("Hola soy la consulta" + consultaComplete);
+                    consultaComplete.setString(1, conexionDto.getUsuario().toUpperCase());
+                    consultaComplete.setString(2, nombreTablaBD.toUpperCase());
                 resultSet = consultaComplete.executeQuery();
 
                 while (resultSet.next()) {
