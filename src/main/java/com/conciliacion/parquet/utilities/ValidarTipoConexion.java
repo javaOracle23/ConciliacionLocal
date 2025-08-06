@@ -1,9 +1,6 @@
 package com.conciliacion.parquet.utilities;
 
-import com.conciliacion.parquet.services.implementation.GestionBDBigQueryImpl;
-import com.conciliacion.parquet.services.implementation.GestionBDMySQLImpl2;
-import com.conciliacion.parquet.services.implementation.GestionBDPOSTGRESSQLServerImpl;
-import com.conciliacion.parquet.services.implementation.GestionBDSQLServerImpl;
+import com.conciliacion.parquet.services.implementation.*;
 import com.conciliacion.parquet.services.interfaces.IGestionFabricaBD;
 
 import java.util.HashMap;
@@ -21,6 +18,8 @@ public class ValidarTipoConexion {
             iGestionBDIndependientes = new GestionBDBigQueryImpl();
         }else if(nombreTipoConexion.equalsIgnoreCase("MYSQL")  ){
             iGestionBDIndependientes = new GestionBDMySQLImpl2();
+        } else if (nombreTipoConexion.equalsIgnoreCase("ORACLE")) {
+            iGestionBDIndependientes = new GestionBDOracle();
         }
 
         return iGestionBDIndependientes;

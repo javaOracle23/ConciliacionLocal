@@ -87,6 +87,13 @@
 			<version>8.0.33</version>
 		</dependency>
 
+		<!-- Maven -->
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<version>19.3.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
