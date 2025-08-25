@@ -28,6 +28,7 @@ public class ParametrizacionEntity {
 //    @Column(name = "data_solicitud_destino")
     private String dataSolicitudDestino;
 
+    private String keys;
 
     public Integer getIdParameto() {
         return idParameto;
@@ -83,5 +84,13 @@ public class ParametrizacionEntity {
 
     public void setDataSolicitudDestino(String dataSolicitudDestino) {
         this.dataSolicitudDestino = dataSolicitudDestino;
+    }
+
+    public String getKeys() {
+        return keys;
+    }
+
+    public void setKeys(String keys) {
+        this.keys = keys;
     }
 }

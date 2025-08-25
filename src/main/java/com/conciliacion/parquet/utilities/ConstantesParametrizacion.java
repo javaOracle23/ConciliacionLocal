@@ -104,6 +104,7 @@ public final class ConstantesParametrizacion {
                         parametrizacionEntity.setIdConexion2(Integer.parseInt(idConexion2));
                         parametrizacionEntity.setDataSolicitudOrigen(rec.get(5).toString());
                         parametrizacionEntity.setDataSolicitudDestino(rec.get(6).toString());
+                        parametrizacionEntity.setKeys(rec.get(7).toString());
                         break;
                     }
 
@@ -160,6 +161,7 @@ public final class ConstantesParametrizacion {
         parametrizacionDto.setIdConexion2(parametrizacionDto.getIdConexion2());
         parametrizacionDto.setDataSolicitudOrigen(parametrizacionDto.getDataSolicitudOrigen());
         parametrizacionDto.setDataSolicitudDestino(parametrizacionDto.getDataSolicitudDestino());
+        parametrizacionDto.setKeys(parametrizacionDto.getKeys());
         parametrizacionDto.setFechaCreacion(new Date());
         parametrizacionDto.setFechaModificacion(new Date());
 
@@ -179,8 +181,13 @@ public final class ConstantesParametrizacion {
                 .build()) {
 
             if (records != null) {
-                for (GenericRecord record : records) {
-                    writer.write(record);
+                for (GenericRecord old : records) {
+                    GenericData.Record normalized = new GenericData.Record(schema);
+                    for (Schema.Field f : schema.getFields()) {
+                        Object v = old.get(f.name());
+                        normalized.put(f.name(), v != null ? v.toString() : "");
+                    }
+                    writer.write(normalized);
                 }
             }
             GenericData.Record record = new GenericData.Record(schema);
@@ -236,20 +243,25 @@ public final class ConstantesParametrizacion {
                                  .build()) {
                 GenericRecord rec;
                 while ((rec = parquetReader.read()) != null) {
-                    String idRegistro = rec.get(0).toString();
+                    GenericData.Record normalized = new GenericData.Record(schema);
+                    for (Schema.Field f : schema.getFields()) {
+                        Object v = rec.get(f.name());
+                        normalized.put(f.name(), v != null ? v.toString() : "");
+                    }
+                    String idRegistro = normalized.get(0).toString();
                     String idParametrizacion = parametrizacionDto.getIdParameto().toString();
                     if(idRegistro.equalsIgnoreCase(idParametrizacion)){
                         for (java.lang.reflect.Field campo : campos) {
                             try {
                                 campo.setAccessible(true);
                                 Object valor = campo.get(objParametrizacion);
-                                rec.put(campo.getName(), valor != null ? valor.toString(): "");
+                                normalized.put(campo.getName(), valor != null ? valor.toString(): "");
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             }
                         }
                     }
-                    records.add(rec);
+                    records.add(normalized);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -308,10 +320,15 @@ public final class ConstantesParametrizacion {
                                  .build()) {
                 GenericRecord rec;
                 while ((rec = parquetReader.read()) != null) {
-                    String idRegistro = rec.get(0).toString();
+                    GenericData.Record normalized = new GenericData.Record(schema);
+                    for (Schema.Field f : schema.getFields()) {
+                        Object v = rec.get(f.name());
+                        normalized.put(f.name(), v != null ? v.toString() : "");
+                    }
+                    String idRegistro = normalized.get(0).toString();
                     String idBusqueda = id.toString();
                     if(!idRegistro.equalsIgnoreCase(idBusqueda)){
-                        records.add(rec);
+                        records.add(normalized);
                     }
                 }
                 eliminarExitoso = true;
@@ -392,8 +409,9 @@ public final class ConstantesParametrizacion {
                     parametrizacionDto.setIdConexion2(Integer.parseInt(idConexion2));
                     parametrizacionDto.setDataSolicitudOrigen(rec.get(5).toString());
                     parametrizacionDto.setDataSolicitudDestino(rec.get(6).toString());
-                    String fechaCreacion = rec.get(7).toString();
-                    String fechaModificacion = rec.get(8).toString();
+                    parametrizacionDto.setKeys(rec.get(7).toString());
+                    String fechaCreacion = rec.get(8).toString();
+                    String fechaModificacion = rec.get(9).toString();
 
                     try {
                         dateCreacion = formatter.parse(fechaCreacion);
@@ -464,8 +482,9 @@ public final class ConstantesParametrizacion {
                         parametrizacionDto.setIdConexion2(Integer.parseInt(idConexion2));
                         parametrizacionDto.setDataSolicitudOrigen(rec.get(5).toString());
                         parametrizacionDto.setDataSolicitudDestino(rec.get(6).toString());
-                        String fechaCreacion = rec.get(7).toString();
-                        String fechaModificacion = rec.get(8).toString();
+                        parametrizacionDto.setKeys(rec.get(7).toString());
+                        String fechaCreacion = rec.get(8).toString();
+                        String fechaModificacion = rec.get(9).toString();
 
                         try {
                             dateCreacion = formatter.parse(fechaCreacion);

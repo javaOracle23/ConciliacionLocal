@@ -19,6 +19,8 @@ public class ParametrizacionDto {
 
     private String dataSolicitudDestino;
 
+    private String keys;
+
     private Date fechaCreacion;
 
     private Date fechaModificacion;
@@ -77,6 +79,13 @@ public class ParametrizacionDto {
 
     public void setDataSolicitudDestino(String dataSolicitudDestino) {
         this.dataSolicitudDestino = dataSolicitudDestino;
+    }
+    public String getKeys() {
+        return keys;
+    }
+
+    public void setKeys(String keys) {
+        this.keys = keys;
     }
     public Date getFechaCreacion() {
         return fechaCreacion;
