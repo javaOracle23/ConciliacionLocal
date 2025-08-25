@@ -190,11 +190,11 @@ public class GestionBDOracle implements IGestionFabricaBD {
         String query = null;
         List<String> keys = null;
         try {
-            if(parametrizacionEntity.getIdParameto().intValue() == 1){
+            if(parametrizacionEntity.getIdTipoParametro().intValue() == 1){
                 parametrosSQLDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosSQLDto.class);
                 query = parametrosSQLDto.getQuery();
                 keys = parametrosSQLDto.getKeys();
-            }else if(parametrizacionEntity.getIdParameto().intValue() == 2){
+            }else if(parametrizacionEntity.getIdTipoParametro().intValue() == 2){
                 parametrosTXTDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosTXTDto.class);
                 query = Util.construirQuery(parametrosTXTDto);
                 keys = parametrosTXTDto.getKeys();
@@ -298,10 +298,10 @@ public class GestionBDOracle implements IGestionFabricaBD {
         String nombreArchivo = null;
         String query = null;
         try {
-            if(parametrizacionEntity.getIdParameto().intValue() == 1){
+            if(parametrizacionEntity.getIdTipoParametro().intValue() == 1){
                 parametrosSQLDto = objectMapper.readValue(jsonSolicitudDestino, ParametrosSQLDto.class);
                 query = parametrosSQLDto.getQuery();
-            }else if(parametrizacionEntity.getIdParameto().intValue() == 2){
+            }else if(parametrizacionEntity.getIdTipoParametro().intValue() == 2){
                 parametrosTXTDto = objectMapper.readValue(jsonSolicitudDestino, ParametrosTXTDto.class);
                 query = Util.construirQuery(parametrosTXTDto);
             }

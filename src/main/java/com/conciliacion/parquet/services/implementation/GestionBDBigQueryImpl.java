@@ -260,7 +260,7 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
         List<String> keys = null;
         try {
 
-            if(parametrizacionEntity.getIdParameto().intValue() == 1){
+            if(parametrizacionEntity.getIdTipoParametro().intValue() == 1){
                 parametrosSQLDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosSQLDto.class);
                 //columns = parametrosTXTDto.getColumns();
                 query = parametrosSQLDto.getQuery();
@@ -275,7 +275,7 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
                     }
                 }
                 keys = parametrosSQLDto.getKeys();
-            }else if(parametrizacionEntity.getIdParameto().intValue() == 2){
+            }else if(parametrizacionEntity.getIdTipoParametro().intValue() == 2){
                 parametrosTXTDto = objectMapper.readValue(jsonSolicitudOrigen, ParametrosTXTDto.class);
                 query = Util.construirQuery(parametrosTXTDto);
                 columns = parametrosTXTDto.getColumns();
@@ -400,7 +400,7 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
         File outputFiles = null;
         try {
             columns = parametrosTXTDto.getColumns();
-            if(parametrizacionEntity.getIdParameto().intValue() == 1){
+            if(parametrizacionEntity.getIdTipoParametro().intValue() == 1){
                 parametrosSQLDto = objectMapper.readValue(jsonSolicitudDestino, ParametrosSQLDto.class);
                 query = parametrosSQLDto.getQuery();
                 String palabraInicio = "SELECT";
@@ -409,7 +409,7 @@ public class GestionBDBigQueryImpl implements IGestionFabricaBD {
                 if(columnas.contains(",")) {
                     columns = Arrays.stream(columnas.split(",")).toList();
                 }
-            }else if(parametrizacionEntity.getIdParameto().intValue() == 2){
+            }else if(parametrizacionEntity.getIdTipoParametro().intValue() == 2){
                 parametrosTXTDto = objectMapper.readValue(jsonSolicitudDestino, ParametrosTXTDto.class);
                 query = Util.construirQuery(parametrosTXTDto);
                 columns = parametrosTXTDto.getColumns();
