@@ -1,10 +1,13 @@
 package com.conciliacion.parquet.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 import java.util.List;
 
 public class ParametrosSQLDto {
 
     private String query;
+    @JsonAlias("key")
     private List<String> keys;
     private List<String> columns;
 

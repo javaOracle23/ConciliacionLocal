@@ -79,9 +79,14 @@ public class ConstantesArchivoExtraccion {
                 .build())
         {
 
-            if(records != null){
-                for(GenericRecord record:records){
-                    writer.write(record);
+            if (records != null) {
+                for (GenericRecord old : records) {
+                    GenericData.Record normalized = new GenericData.Record(schema);
+                    for (Schema.Field f : schema.getFields()) {
+                        Object v = old.get(f.name());
+                        normalized.put(f.name(), v != null ? v.toString() : "");
+                    }
+                    writer.write(normalized);
                 }
             }
             GenericData.Record record = new GenericData.Record(schema);

@@ -205,9 +205,9 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
             achivoExtraccionEntity = ConstantesArchivoExtraccion.guardar(achivoExtraccionEntity);
 
         } catch (JsonProcessingException e) {
-            mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_JSON_MAP );
+            mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_JSON_MAP + ": " + e.getOriginalMessage());
             mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_DATOS_INVALIDOS );
-            LOGGER.error(ConstantesGenericas.MENSAJE , e.getMessage());
+            LOGGER.error(ConstantesGenericas.MENSAJE , e.getMessage(), e);
             return mapResponse;
         }
 
@@ -305,9 +305,9 @@ public class GestionBDSQLServerImpl implements IGestionFabricaBD {
                 query = Util.construirQuery(parametrosTXTDto);
             }
         } catch (JsonProcessingException e) {
-            mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_JSON_MAP );
+            mapResponse.put(ConstantesGenericas.MENSAJE, ConstantesGenericas.MENSAJE_JSON_MAP + ": " + e.getOriginalMessage());
             mapResponse.put(ConstantesGenericas.CODIGO, ConstantesGenericas.CODIGO_DATOS_INVALIDOS );
-            LOGGER.error(ConstantesGenericas.MENSAJE , e.getMessage());
+            LOGGER.error(ConstantesGenericas.MENSAJE , e.getMessage(), e);
             return mapResponse;
         }
 
